@@ -2,7 +2,9 @@
 
 Self Signed Certificate CA Cert, Server Cert and Client Cert p.12 .
 建立安全TLS通道.
-我使用GIT自帶OPENSSL簽CA證書.實作如下:
+我使用GIT自帶OPENSSL簽CA證書.
+
+實作如下:
 
 #CA
 
@@ -23,7 +25,7 @@ openssl pkcs12 -export -inkey client/private/client_key.pem -in client/client_ce
 
 ###end#####
 
-NodeJS Server
+#######NodeJS Server實作###############
 const https = require('https');
 const fs = require('fs');
 const options = {
@@ -83,3 +85,20 @@ socket.on('error', (error) => {
 socket.on('end', (data) => {
     console.log('Socket end event');
 });
+
+##########參考資料未作實#############
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+context.load_cert_chain('server/server_cert.pem', 'server/private/server_key.pem')
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0) as sock:
+    sock.bind(('127.0.0.1', 8443))
+    sock.listen(5)
+    with context.wrap_socket(sock, server_side=True) as ssock:
+        conn, addr = ssock.accept()
+        ...
+
+import requests
+resp = requests.get('https://d8.mbc.edu.mo:8443', cert=('client/client_cert.pem', 'client/private/client_key.pem'))
+
+print resp.status_code
+print resp.text
