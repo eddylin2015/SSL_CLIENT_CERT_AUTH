@@ -1,18 +1,19 @@
 # SSL_CLIENT_CERT_AUTH
 
-Self Signed Certificate CA Cert, Server Cert and Client Cert p.12 .
+## Self Signed Certificate CA Cert, Server Cert and Client Cert p.12 .
 建立安全TLS通道.
 我使用GIT自帶OPENSSL簽CA證書.
-1.PATH
+* 1.PATH
+```js
 md CA
 md CA/PRIVATE
 md SERVER
 md SERVER/PRIVATE
 md CLIENT
 md CLIENT/PRIVATE
-
-2.實作如下:
-
+```
+* 2.實作如下:
+```js
 #CA
 
 openssl req -x509 -nodes -days 3650 -newkey rsa:4096 -keyout ca/private/ca_key.pem -out ca/ca_cert.pem -subj "/C=CN/ST=MACAU State/L=MACAU City/O=MBC EDU./CN=ca.mbc.edu.mo"
@@ -29,10 +30,11 @@ openssl genrsa -out client/private/client_key.pem 4096
 openssl req -new -key client/private/client_key.pem -out client/client.csr -subj "/C=CN/ST=MACAU State/L=MACAU City/O=MBC EDU./CN=client.d8.mbc.edu.mo"  
 openssl x509 -req -days 1460 -in client/client.csr -CA ca/ca_cert.pem -CAkey ca/private/ca_key.pem -CAcreateserial -out client/client_cert.pem -extfile client_cert_ext.cnf
 openssl pkcs12 -export -inkey client/private/client_key.pem -in client/client_cert.pem -out clientd8.p12
-
+```
 ###end#####
 
 #######NodeJS Server實作###############
+```js
 const https = require('https');
 const fs = require('fs');
 const options = {
@@ -62,9 +64,10 @@ const server = tls.createServer(options, (socket) => {
     socket.pipe(socket);
 });
 server.listen(8443, () => {    console.log('server bound');});
-
+```
 
 Client Connect
+```js
 const tls = require('tls');
 const fs = require('fs');
 const options = {
@@ -92,8 +95,9 @@ socket.on('error', (error) => {
 socket.on('end', (data) => {
     console.log('Socket end event');
 });
-
-##########參考資料未作實#############
+```
+# 參考資料未作實
+```python
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain('server/server_cert.pem', 'server/private/server_key.pem')
 
@@ -109,3 +113,4 @@ resp = requests.get('https://d8.mbc.edu.mo:8443', cert=('client/client_cert.pem'
 
 print resp.status_code
 print resp.text
+```
