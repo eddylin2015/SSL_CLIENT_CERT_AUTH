@@ -3,8 +3,15 @@
 Self Signed Certificate CA Cert, Server Cert and Client Cert p.12 .
 建立安全TLS通道.
 我使用GIT自帶OPENSSL簽CA證書.
+1.PATH
+md CA
+md CA/PRIVATE
+md SERVER
+md SERVER/PRIVATE
+md CLIENT
+md CLIENT/PRIVATE
 
-實作如下:
+2.實作如下:
 
 #CA
 
