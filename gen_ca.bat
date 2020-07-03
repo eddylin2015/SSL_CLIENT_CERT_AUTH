@@ -4,7 +4,7 @@ openssl req -x509 -nodes -days 3650 -newkey rsa:4096 -keyout ca/private/ca_key.p
 openssl genrsa -out server/private/server_key.pem 4096
 #method1
 openssl req -new -key server/private/server_key.pem -out server/server.csr -config ssl.conf 
-openssl x509 -req -days 1460 -in server/server.csr -CA ca/ca_cert.pem -CAkey ca/private/ca_key.pem -CAcreateserial -out server/server_cert.pem -extensions v3_req -extfile ssl.openssl genrsa -out client/private/client_key.pem 4096
+openssl x509 -req -days 1460 -in server/server.csr -CA ca/ca_cert.pem -CAkey ca/private/ca_key.pem -CAcreateserial -out server/server_cert.pem -extensions v3_req -extfile ssl.conf 
 
 openssl genrsa -out client/private/client_key.pem 4096
 #method1
