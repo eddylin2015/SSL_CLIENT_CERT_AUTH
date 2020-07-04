@@ -13,27 +13,27 @@ md CLIENT
 md CLIENT/PRIVATE
 ```
 * 2.實作如下:
+### Make Certificates
 ```js
-#CA
+rem CA
 
 openssl req -x509 -nodes -days 3650 -newkey rsa:4096 -keyout ca/private/ca_key.pem -out ca/ca_cert.pem -subj "/C=CN/ST=MACAU State/L=MACAU City/O=MBC EDU./CN=ca.mbc.edu.mo"
 
-#Server Cert
+rem Server Cert
 
 openssl genrsa -out server/private/server_key.pem 4096
 openssl req -new -key server/private/server_key.pem -out server/server.csr -config ssl.conf 
 openssl x509 -req -days 1460 -in server/server.csr -CA ca/ca_cert.pem -CAkey ca/private/ca_key.pem -CAcreateserial -out server/server_cert.pem -extensions v3_req -extfile ssl.conf
 
-#Client Cert
+rem Client Cert
 
 openssl genrsa -out client/private/client_key.pem 4096
 openssl req -new -key client/private/client_key.pem -out client/client.csr -subj "/C=CN/ST=MACAU State/L=MACAU City/O=MBC EDU./CN=client.d8.mbc.edu.mo"  
 openssl x509 -req -days 1460 -in client/client.csr -CA ca/ca_cert.pem -CAkey ca/private/ca_key.pem -CAcreateserial -out client/client_cert.pem -extfile client_cert_ext.cnf
 openssl pkcs12 -export -inkey client/private/client_key.pem -in client/client_cert.pem -out clientd8.p12
 ```
-###end#####
 
-#######NodeJS Server實作###############
+### NodeJS Server實作
 ```js
 const https = require('https');
 const fs = require('fs');
@@ -50,9 +50,18 @@ https.createServer(options, (req, res) => {
   res.end('hello world\n');
 }).listen(8443); 
 
-//https or tls
-
+```
+### tls
+```js
 const tls = require('tls');
+const fs = require('fs');
+const options = {
+  key: fs.readFileSync('server/private/server_key.pem'),
+  cert: fs.readFileSync('server/server_cert.pem'),
+  ca:fs.readFileSync('ca/ca_cert.pem'),
+  requestCert: true, 
+  rejectUnauthorized: true
+};
 const server = tls.createServer(options, (socket) => {
     console.log('server connected', socket.authorized ? 'authorized' : 'unauthorized');    
     socket.on('error', (error) => {
@@ -65,8 +74,7 @@ const server = tls.createServer(options, (socket) => {
 });
 server.listen(8443, () => {    console.log('server bound');});
 ```
-
-Client Connect
+# Client Connect
 ```js
 const tls = require('tls');
 const fs = require('fs');
@@ -115,22 +123,19 @@ resp = requests.get('https://d8.mbc.edu.mo:8443', cert=('client/client_cert.pem'
 print resp.status_code
 print resp.text
 ```
-# Markdown 寫法
+# 參考 Markdown 寫法
 粗體
-
 **bold**
 標題字
-
 # This is an <h1> tag
 次標題字
-
 ## This is an <h2> tag
 小標題字
-
 ###### This is an <h6> tag
 
 列表
-在同一個主題之下要一一列出內容時，我們常用列表來表示，例如：討論專案中需要哪些功能，或是說明要修改的內容有哪些。
+
+    在同一個主題之下要一一列出內容時，我們常用列表來表示，例如：討論專案中需要哪些功能，或是說明要修改的內容有哪些。
 
 * Item 1
 * Item 2
@@ -138,17 +143,19 @@ print resp.text
   * Item 2b
 - [x] This is a complete item
 - [ ] This is an incomplete item
+
 區塊
+
 `Format one word or one line`
 
     code (4 spaces indent)
 
 插入圖片語法
 
-![GITHUB]( 圖片網址 "圖片名稱")
+![GITHUB]( http://icoffeebread.appspot.com/static/logo.PNG "coffee bread")
 
 階層式區塊
-階層式區塊在表現結構或功能關係上是相當好用的呈現形式
+   階層式區塊在表現結構或功能關係上是相當好用的呈現形式
 
 階層式區塊語法：
 
