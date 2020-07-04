@@ -1,8 +1,10 @@
 # SSL_CLIENT_CERT_AUTH
 
 ## Self Signed Certificate CA Cert, Server Cert and Client Cert p.12 .
-建立安全TLS通道.
-我使用GIT自帶OPENSSL簽CA證書.
+## 建立安全TLS通道.
+
+    我使用GIT自帶OPENSSL簽CA證書.HTTPS SEVER只有分派 4096 bit CLIENT CA的用戶才能訪問,否則拒絶連接.書寫一些實作和應用場景.以下先提供一些實作代碼,往後補充操作具体內容,和支持不同WEB Site(Apahce,Ngnix)及程式例如對PYTHON支授.我認為有一定應為空間,及安全性求要高程式應用提供一種方案.
+
 * 1.PATH
 ```js
 md CA
