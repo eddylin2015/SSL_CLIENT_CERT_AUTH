@@ -8,11 +8,11 @@
 * 1.PATH
 ```js
 md CA
-md CA/PRIVATE
+md CA\PRIVATE
 md SERVER
-md SERVER/PRIVATE
+md SERVER\PRIVATE
 md CLIENT
-md CLIENT/PRIVATE
+md CLIENT\PRIVATE
 ```
 * 2.實作如下:
 ### Make Certificates
