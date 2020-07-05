@@ -1,0 +1,153 @@
+# Create a self-signed certificate using OpenSSL
+    上禮拜試著架了一下各種伺服器，像是 Web Server (FAMP) 、Mail Server (Postfix + Dovecot) 之類的。當然其中一個部分就是要追隨潮流（咦）幫每個東西加個 S ：讓 HTTP 變成 HTTPS，IMAP 變成 IMAPS 之類的。
+當然現在遇到這種情況我個人都覺得就用 Certbot 直接弄個 Let’s Encrypt 的 certificate 就好了，不過確實偶爾也是會有想要用自簽憑證 (Self-signed Certificate) 測試一下就好的情況，所以就來把這個步驟記一下，因為我那天看了才發現這個步驟好像對大家來說意外的是個難關（？）
+以下名詞預設大家已經理解：
+
+•	certificate：指 SSL 證書
+•	key：指證書的私鑰
+•	CA：Certificate Authority，憑證頒發機構，負責簽憑證的
+•	CSR：Certificate Signing Request
+
+# Method 1: 直接生出一組 key & certificate
+openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout key.pem -out cert.pem -days 30
+對，就是這麼簡單，一行 :D
+其中的參數說明一下：
+•	req：Certificate Request(PKCS #10)
+•	x509：輸出 x509 的 certificate ，而不要輸出 certificate request
+•	newkey rsa:4096：建立一個新的 4096 bits 的 RSA key
+•	sha256：用 SHA256 做檢查碼（Digest）
+•	nodes：不要幫 key 加密
+•	keyout：輸出 key 的檔案
+•	out：輸出 certificate 的檔案
+•	days 365：憑證的有效日期
+這樣你就會有一個叫做 key.pem 的私鑰檔跟 cert.pem 的證書檔可以直接用在各種服務上了。順帶提一下之所以不幫 key 加密的原因是因為服務基本上都需要讀到 key 跟 certificate 兩個檔，你如果加密了不是把密碼寫在檔案裡就是每次重啟服務的時候都要輸入一次，這邊為了方便就算了。
+
+# Method 2: 用自己的 CA 簽自己的 Certificate
+用這個方法的話步驟會稍微多一點點，大致上是這樣：
+1.	先幫自己的 CA 生一組 key & certificate
+2.	幫自己的主機生一組 key & CSR
+3.	用自己的主機簽 CSR 讓他變成 certificate
+首先我們先幫 CA 生一組 key
+openssl genrsa -des3 -out ca.key 4096
+由於 CA 的 key 只有在簽 certificate 的時候會用到，不像 certificate 的 key 服務本身會用到，所以這邊可以加上 des3 ，會要你輸入一個密碼加密。
+openssl req -x509 -new -nodes -key ca.key -sha256 -days 365 -out ca.crt
+接下來我們幫 CA 生一組 certificate，通常這個天數會久不少。
+openssl genrsa -out host.key 4096
+這組是主機上的服務要用的 key ，就不加密了。
+openssl req -new -key host.key -sha256 -out host.csr
+產生一個 CSR ，會要求你輸入一些資訊，你也可以把他們弄成參數直接帶入，像下面這樣：
+openssl req -new -key host.key -subj "/C=TW/ST=Taiwan/L=Taipei City/O=MyOrg/OU=MyUnit/CN=my.domain" -sha256 -out host.csr
+最後來簽這個 CSR 產生 certificate
+openssl x509 -req -in host.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out host.crt -days 30 -sha256
+其中幾個先前沒出現的參數說明一下：
+•	in：輸入檔案，這邊是 CSR 檔
+•	out：輸出檔案，這邊是產生的 certificate
+•	CA：CA 自己的 certificate
+•	CAkey：CA 自己的 key
+•	CAcreateserial：建立一個 CA 的序號檔（.srl），這是用來記錄 CA 簽了多少 certificate 的，只有第一次需要，之後是直接用 CAserial 指定 srl 檔就可以了
+第二種方法的好處是你可以簽很多 certificate 出來，把自己的 CA 加入信任的 CA 之後就不會有錯誤訊息了。不過說真的，Certbot 跟 Let’s Encrypt 真的很方便，不試試嗎？ :P
+
+# 安裝 OpenSSL 工具
+    在進行安裝之前，請先檢查是否已經安裝過，因為你很有可能系統已經內建，或是曾經安裝過卻忘記了。建議開啟終端機視窗 (命令提示字元)，輸入 openssl version 檢查看看是否會顯示目前安裝的 OpenSSL 版本。
+•	Windows
+o	使用 Git 內建的 OpenSSL 工具
+當你安裝好 Git for Windows 的時候，其實就已經內建了 OpenSSL 工具，預設執行檔路徑為 C:\Program Files\Git\usr\bin\openssl.exe，你可以將 C:\Program Files\Git\usr\bin 路徑加入到 PATH 環境變數之中，以後就可以直接輸入 openssl 來執行此工具。
+o	透過預先編譯好的 OpenSSL 安裝程式
+Win32/Win64 OpenSSL Installer for Windows - Shining Light Productions (下載第一個)
+o	透過 Chocolatey 進行自動安裝
+Chocolatey Gallery | OpenSSL – The Open Source SSL and TLS toolkit 1.1.1.20181020
+choco install openssl.light -y 
+•	Linux
+o	Ubuntu
+sudo apt install openssl 
+o	CentOS / RedHat
+sudo yum install openssl 
+•	macOS
+o	Homebrew
+brew update brew install openssl echo 'export PATH="/usr/local/opt/openssl/bin:$PATH"' >> ~/.bash_profile source ~/.bash_profile 
+o	手動安裝
+請參考 Installing OpenSSL on macOS 相關說明。
+
+# 使用 OpenSSL 建立自簽憑證
+    基本上按照下列步驟，就一定能建立出合法的自簽憑證：
+## 1.	建立 ssl.conf 設定檔
+[req] 
+prompt = no 
+default_md = sha256 
+default_bits = 2048 
+distinguished_name = dn 
+x509_extensions = v3_req 
+[dn] 
+C = TW 
+ST = Taiwan 
+L = Taipei 
+O = Duotify Inc. 
+OU = IT Department 
+emailAddress = admin@example.com 
+CN = localhost 
+[v3_req] 
+subjectAltName = @alt_names 
+[alt_names] 
+DNS.1 = *.localhost 
+DNS.2 = localhost 
+IP.1 = 192.168.2.100 
+
+    上述設定檔內容的 [dn] 區段 (Distinguished Name) 為憑證的相關資訊，你可以自由調整為你想設定的內容，其中 O (Organization) 是公司名稱，OU (Organization Unit) 是部門名稱，而 CN (Common Name) 則是憑證名稱，你可以設定任意名稱，設定中文也可以，但請記得檔案要以 UTF-8 編碼存檔，且不能有 BOM 字元。
+設定檔的 [alt_names] 區段，則是用來設定 SSL 憑證的域名，這部分設定相當重要，如果沒有設定的話，許多瀏覽器都會將憑證視為無效憑證。這部分你要設定幾組域名都可以，基本上沒有什麼上限，因為自簽憑證主要目的是用來開發測試之用，因此建議可以把可能會用到的本機域名 (localhost) 或是區域網路的 IP 地址都加上去，以便後續進行遠端連線測試。
+如果你希望在 Google Chrome 瀏覽器也能瀏覽受信任的 SSL 網站，那麼設定正確的域名是非常重要的，這部分的相關知識我在 如何使用 PowerShell 建立開發測試用途的自簽憑證 (Self-Signed Certificate) 這篇文章中有完整說明。
+## 2.	透過 OpenSSL 命令產生出自簽憑證與相對應的私密金鑰
+透過以下命令就可以建立出 私密金鑰 (server.key) 與 憑證檔案 (server.crt)：
+openssl req -x509 -new -nodes -sha256 -utf8 -days 3650 -newkey rsa:2048 -keyout server.key -out server.crt -config ssl.conf 
+請注意：上述命令會建立一個「未加密」的私密金鑰檔案，使用 PEM 格式輸出。
+
+## 3.	透過 OpenSSL 命令產生 PKCS#12 憑證檔案 (*.pfx 或 *.p12)
+如果你想將建立好的 私密金鑰 (server.key) 與 憑證檔案 (server.crt) 組合成一個 PFX 憑證檔案 (PKCS#12)，可以透過以下命令產生 server.pfx 檔案。由於 *.pfx 格式的檔案必須設定一組密碼，因此在執行過程中會需要輸入密碼，用以保護這個 *.pfx 檔案。
+openssl pkcs12 -export -in server.crt -inkey server.key -out server.pfx 
+如此以來，你就擁有三個檔案，分別是：
+1.	server.key (私密金鑰) (使用 PEM 格式) (無密碼保護)
+2.	server.crt (憑證檔案) (使用 PEM 格式)
+3.	server.pfx (PFX 檔案) (使用 PKCS#12 格式)
+※ 設定 IIS 網站繫結的時候，必須使用 PFX 格式的憑證檔案。
+接下來，就是將憑證與金鑰安裝到網站伺服器中，有上述三個檔案就幾乎足以讓你設定給 IIS, Apache, nginx, Angular Live Development Server 等不同網站環境使用了。
+
+##  匯入自簽憑證到「受信任的根憑證授權單位」   
+    光是建立好自簽憑證，網站伺服器也設定正確，還是不夠的。這畢竟是一個 PKI 基礎架構，必須所有需要安全連線的端點都能互相信任才行，因此你還必須將建立好的自簽憑證安裝到「受信任的根憑證授權單位」之中，這樣子你的作業系統或瀏覽器才能將你的自簽憑證視為「可信任的連線」，以下是不同作業系統平台的設定方式：
+
+•	Windows
+請以「系統管理員身分」執行以下命令，即可將憑證匯入到 Windows 的憑證儲存區之中：
+certutil -addstore -f "ROOT" server.crt 
+若要以手動方式匯入，可以參考以下步驟：
+1.	開啟檔案總管，並滑鼠雙擊 server.crt 檔案
+2.	點擊「安裝憑證」按鈕
+3.	選取「目前使用者」並按「下一步」繼續
+4.	選取「將所有憑證放入以下的存放區」並按下「瀏覽」按鈕
+5.	選取「受信任的根憑證授權單位」並按下「確定」
+6.	按「下一步」繼續
+7.	按「完成」繼續
+8.	在 安全性警告 視窗按下「是(Y)」即可完成設定
+請注意：在匯入完成後 Google Chrome 瀏覽器可能不會立刻顯示這是個有效憑證 (因為快取的關係)，但你只要過一段時間重開 Chrome 瀏覽器，即可看見網址列的變化，不會再出現紅色不安全的提示。
+•	Linux (Ubuntu 18.04)
+注意：憑證的副檔名一定要是 *.crt
+sudo cp server.crt /usr/share/ca-certificates/ sudo dpkg-reconfigure ca-certificates 
+執行 sudo dpkg-reconfigure ca-certificates 的時候，會出現選單畫面，請記得勾選你複製進去的那張憑證，按下 Enter 之後就會全自動設定完成。
+•	Linux (Ubuntu, Debian)
+sudo cp server.crt /usr/local/share/ca-certificates/ sudo update-ca-certificates 
+•	Linux (CentOS 6, RedHat)
+sudo yum install ca-certificates sudo update-ca-trust force-enable sudo cp server.crt /etc/pki/ca-trust/source/anchors/ sudo update-ca-trust extract 
+•	Linux (CentOS 5)
+sudo cat server.crt >> /etc/pki/tls/certs/ca-bundle.crt 
+•	macOS
+sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain server.crt 
+•	Firefox
+
+   因為 Firefox 瀏覽器內部自行維護了一份「受信任的根憑證授權單位」，因此就算你已經安裝自簽憑證到作業系統裡，還是要額外到 Firefox 瀏覽器的設定中手動加入伺服器憑證才行。
+1.	開啟 [選項] 功能
+2.	點擊「隱私權與安全性」
+3.	找到最下方的「檢視憑證」按鈕
+4.	點選「伺服器」頁籤
+5.	點擊「新增例外網站」
+6.	輸入網站網址 (位置) 並按下「取得憑證」
+7.	最後按下「確認安全例外」即可設定完成
+
+ 
+
