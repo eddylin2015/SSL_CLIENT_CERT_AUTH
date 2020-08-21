@@ -172,16 +172,29 @@ https://guides.github.com/features/mastering-markdown/
 
 # Vim 101: A Beginner’s Guide to Vim
 ## simple ex01
-* Open file: vim filename
-* Press i (for insert mode) and start to add some text .
-* Press Esc and Save file [:w]
-* Press Esc and quite [:q]
+```cmd
+ Open file: vim filename
+ Press i (for insert mode) and start to add some text .
+ Press Esc and Save file [:w]
+ Press Esc and quite [:q]
+```
 ## The Modes 
 define three: insert mode, command mode, and last-line mode.
+command mode:
+delete an entire line, rather than inserting “dd.”
+delete one charter "X"
+To enter the insert mode, type i (for “insert”) 
+To get out of insert mode, hit the Escape key.
 
 * When you run vim filename to edit a file, Vim starts out in command mode. 
 * enter the insert mode, type i (for “insert”) and now the keys will behave as you’d expect. To get out of insert mode, hit the Escape key.
 * Once you press Escape, you’re in command mode again. What if you’d like to save your file or search through your document? No problem, press : and Vim will switch to last-line mode. Vim is now waiting for you to enter a command like :w to write the file or :q to exit the editor.
+### ex02
+```
+i
+esc
+:q
+```
 
 ## The Basics Of Moving In Vim
 The first thing you’ll want to learn is how to move around a file. When you’re in command mode, you’ll want to remember the following keys and what they do:
@@ -196,8 +209,10 @@ The first thing you’ll want to learn is how to move around a file. When you’
 *	G move to the end of the file.
 *	gg move to the beginning of the file.
 *	`. move to the last edit.
-tips: prefacing a movement command with a number will execute that movement multiple times. So, if you want to move up six lines, enter 6k and Vim will move the cursor up six lines. If you want to move over five words, enter 5w. To move 10 words back, use 10b.
-### ex02
+tips: prefacing a movement command with a number will execute that movement multiple times. 
+So, if you want to move up six lines, enter 6k and Vim will move the cursor up six lines. 
+If you want to move over five words, enter 5w. To move 10 words back, use 10b.
+### ex03
 5w 
 6j (down 6 lines) 
 6k(up 6 lines) 
@@ -297,5 +312,6 @@ If you really want to quit, go ahead and use :q! to leave without being nagged.
 You can also exit Vim using ZZ, which will save and quit the file. 
 
 ## Source
-https://www.linux.com/training-tutorials/vim-101-beginners-guide-vim/
+* https://www.linux.com/training-tutorials/vim-101-beginners-guide-vim/
+* https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf
 
