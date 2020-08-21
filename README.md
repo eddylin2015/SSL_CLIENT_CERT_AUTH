@@ -316,14 +316,24 @@ You can also exit Vim using ZZ, which will save and quit the file.
 * https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf
 ## VIM SHEET
 ### Navigation
-* h Move left H Top line on screen
-* * j Move down M Middle line on screen
-* k Move up L Bottom line on screen
+* h Move left
+* j Move down 
+* k Move up
 * l Move right
 * 10j Move down 10 lines
-* gg First line of the file e The end of the current word
-* G Last line of the file b Beginning of current word
-* :20 Line 20 of the file w Beginning of next word
+
+* H Top line on screen
+* M Middle line on screen
+* L Bottom line on screen
+
+* gg First line of the file 
+* G Last line of the file 
+* :20 Line 20 of the file 
+
+* e The end of the current word
+* b Beginning of current word
+* w Beginning of next word
+
 * 0 Beginning of current line
 * ^ First non-whitespace character of current line
 * $ End of current line
