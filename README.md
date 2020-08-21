@@ -153,7 +153,9 @@ print resp.text
     code (4 spaces indent)
 
 插入圖片語法
-
+```code
+![GITHUB]( http://icoffeebread.appspot.com/static/logo.PNG "coffee bread")
+```
 ![GITHUB]( http://icoffeebread.appspot.com/static/logo.PNG "coffee bread")
 
 階層式區塊
@@ -169,8 +171,18 @@ print resp.text
 https://guides.github.com/features/mastering-markdown/
 
 # Vim 101: A Beginner’s Guide to Vim
-## SAVE FILE: [:w]
+## simple ex01
+* Open file: vim filename
+* Press i (for insert mode) and start to add some text .
+* Press Esc and Save file [:w]
+* Press Esc and quite [:q]
 ## The Modes 
+define three: insert mode, command mode, and last-line mode.
+
+* When you run vim filename to edit a file, Vim starts out in command mode. 
+* enter the insert mode, type i (for “insert”) and now the keys will behave as you’d expect. To get out of insert mode, hit the Escape key.
+* Once you press Escape, you’re in command mode again. What if you’d like to save your file or search through your document? No problem, press : and Vim will switch to last-line mode. Vim is now waiting for you to enter a command like :w to write the file or :q to exit the editor.
+
 ## The Basics Of Moving In Vim
 The first thing you’ll want to learn is how to move around a file. When you’re in command mode, you’ll want to remember the following keys and what they do:
 *	h moves the cursor one character to the left.
@@ -184,10 +196,14 @@ The first thing you’ll want to learn is how to move around a file. When you’
 *	G move to the end of the file.
 *	gg move to the beginning of the file.
 *	`. move to the last edit.
-Here’s a handy tip: prefacing a movement command with a number will execute that movement multiple times. So, if you want to move up six lines, enter 6k and Vim will move the cursor up six lines. If you want to move over five words, enter 5w. To move 10 words back, use 10b.
-Keep that tip in mind–you’ll find that prefacing other commands with a number can come in handy as well.
-The best way to learn is practice. Take a few minutes to try Vim out. If you’re on a Linux system right now, open up a terminal and type vim filename. Enter insert mode and type a bit (or copy some of the text from this article into Vim) and then hit Escape to start practicing movement around the file. Once you feel you’re getting the hang of it, it’s time to try some editing.
+tips: prefacing a movement command with a number will execute that movement multiple times. So, if you want to move up six lines, enter 6k and Vim will move the cursor up six lines. If you want to move over five words, enter 5w. To move 10 words back, use 10b.
+### ex02
+5w 
+6j (down 6 lines) 
+6k(up 6 lines) 
+10b
 ```cmd
+goto line.3
 :3
 :set number
 :set nonumber
@@ -207,6 +223,7 @@ Again, here’s a longer list of the commands you’ll definitely want to know s
 *	Ctrl-r will redo the last undo.
 You may have noticed that several commands combine a text operation and movement key. gg takes you to the end of a file, and d is used to delete. Combining them gives you something more powerful. Vim’s like that. If you’re working in Vim and think “hey, I wonder if I can combine two things I know to make something easier,” the answer is often (but not always) yes.
 Let’s move on a bit and talk briefly about searching and replacing.
+### ex03
 
 ## Searching And Replacing
 ```cmd
@@ -239,20 +256,46 @@ The commands you most need to start out:
 *	y yank text into the copy buffer.
 *	p paste text after the current line.
 *	P paste text on the current line.
+### ex04
+* copy line and paste after the current line.
+```cmd
+command mode
+V
+y
+p
+```
+* copy region and paste on the current line.
+``` cmd
+commnad mode
+v
+y
+P
+```
 
+## Quit
 You’ve done enough editing for one day and you’re ready to pack it in. No problem. Here’s how you can save the file and quit Vim.
-Saving And Quitting
+### ex05 Saving And Quitting
 ```cmd
 :w
 :w filename
 :q
 :q!
+```
+
+```cmd
 ZZ
 ```
 If you’re in insert mode, hit Escape. Then enter : and you’ll see a line at the bottom of the screen with a cursor ready to take input.
+
 To write the file you’re editing, enter w. (So, you’ll have :w.) That will write the file to the existing filename. If you don’t have a filename or want to write out to a different filename, use :w filename.
+
 To quit Vim after you’ve finished, hit :q. Since Vim is your friend, it won’t just pop out on you if you haven’t saved your file. It will say “no write since last change,” and suggest that you add ! to override.
-If you really want to quit, go ahead and use :q! to leave without being nagged.You can also exit Vim using ZZ, which will save and quit the file. Again, all this might sound a bit complex, but it really isn’t. It’s a bunch of smaller things to learn that when you add them all up, make for a very powerful package.
-For now that should be enough to get you started. Don’t fret, though. We’ll go through more Vim usage next week, and keep working on Vim until you’re an expert.
+
+If you really want to quit, go ahead and use :q! to leave without being nagged.
+
+### ZZ 
+You can also exit Vim using ZZ, which will save and quit the file. 
+
+## Source
 https://www.linux.com/training-tutorials/vim-101-beginners-guide-vim/
 
