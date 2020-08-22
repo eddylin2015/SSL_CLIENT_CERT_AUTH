@@ -170,7 +170,7 @@ You can also exit Vim using ZZ, which will save and quit the file.
 * b Beginning of current word
 * w Beginning of next word
 
-* 0 Beginning of current line
+* 0 Beginning of current line (Number Zero)
 * ^ First non-whitespace character of current line
 * $ End of current line
 * % Move to matching parenthesis, bracket or brace
