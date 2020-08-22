@@ -1,16 +1,19 @@
-# Vim 101: A Beginner’s Guide to Vim
-## simple ex01
+# Vim 101: 菜鳥學習VIM教程 A Beginner’s Guide to Vim
+## 來一個簡單例子 ex01
 ```cmd
  Open file: vim filename
  Press i (for insert mode) and start to add some text .
- Press Esc and Save file [:w]
- Press Esc and quite [:q]
+ Press Esc(return command mode) and Save file [:w]
+ Press Esc(return command mode) and quite [:q]
 ```
-## The Modes 
-define three: insert mode, command mode, and last-line mode.
+## 介紹模式 The Modes 
+* insert mode
+* command mode
+* last-line mode.
 command mode:
-delete an entire line, rather than inserting “dd.”
-delete one charter "X"
+delete an entire line, rather than inserting "dd".
+delete one charecter "x"
+### switch mode
 To enter the insert mode, type i (for “insert”) 
 To get out of insert mode, hit the Escape key.
 
@@ -19,9 +22,13 @@ To get out of insert mode, hit the Escape key.
 * Once you press Escape, you’re in command mode again. What if you’d like to save your file or search through your document? No problem, press : and Vim will switch to last-line mode. Vim is now waiting for you to enter a command like :w to write the file or :q to exit the editor.
 ### ex02
 ```
-i
+vim filename
+i (switch to insert mode, and type charcters "xxxxx xxxx \n xxx \n xxxxx xxxx \n xxx \n")
+esc(switch to command mode, and "x" delete)
+i (switch to insert mode, and type charcters "foo foo \n foo \n dd dd \n foo \n")
+esc(switch to command mode, "dd" delete one line)
 esc
-:q
+:wq
 ```
 
 ## The Basics Of Moving In Vim
@@ -142,7 +149,8 @@ You can also exit Vim using ZZ, which will save and quit the file.
 ## Source
 * https://www.linux.com/training-tutorials/vim-101-beginners-guide-vim/
 * https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf
-## VIM SHEET
+
+## 參考指令表 VIM SHEET
 ### Navigation
 * h Move left
 * j Move down 
@@ -241,14 +249,16 @@ with ‘\’ to be searched for literally; these characters include (, ), *, ., 
 regular expression patterns are interpreted literally by default and must be escaped to be used
 as a part of a regular expression; these include +.
 ### Search
-* * Find the next instance of the current word
-* # Find the previous instance of the current word
-* n Find the next instance of the word being searched for, in the direction specified by the last use of {*,#}
-* N Find the previous instance of the word being searched for, in the direction specified by the last use of {*,#}
-* /word Find the next occurrence of ‘word’
-* /word\c Find the next occurrence of ‘word’, ignoring case (‘\c’ can appear anywhere in the sequence being searched for)
-* /\<word\> Find the next occurrence of the word ‘word’, where ‘word’ is bounded by word boundaries (ex. space, dash)
-* :noh Un-highlight words
+```cmd
+ * Find the next instance of the current word
+ # Find the previous instance of the current word
+ n Find the next instance of the word being searched for, in the direction specified by the last use of {*,#}
+ N Find the previous instance of the word being searched for, in the direction specified by the last use of {*,#}
+ /word Find the next occurrence of ‘word’
+ /word\c Find the next occurrence of ‘word’, ignoring case (‘\c’ can appear anywhere in the sequence being searched for)
+ /\<word\> Find the next occurrence of the word ‘word’, where ‘word’ is bounded by word boundaries (ex. space, dash)
+ :noh Un-highlight words
+``` 
 ### Handy tricks
 * ~ Toggle case of character beneath the cursor
 * xp Transpose current character with that to its right
