@@ -685,6 +685,6 @@ Delimiters in Search and Replace
 *	vimregex
 *	What does this regex mean?
 
-
+https://people.csail.mit.edu/vgod/vim/vim-cheat-sheet-en.pdf
 
 
