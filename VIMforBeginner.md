@@ -545,143 +545,145 @@ regexp 會有貪心的傾向，什麼意思呢？就是說在同一行內，如�
 
 最後提醒您，這可不是 regexp 的全部，礙於篇幅及在下功力的問題，當然是沒辦法全面詳盡的向各位做介紹，在下只是將各位領進門，修行就得看各位了！如果還想更深入的研究 regexp，可參考： Mastering 
 ```
-```
-## Regular Expressions(O'Reilly & Associates) 一書。
-Regular Expressions
-•	Flags for Search and Replace
-•	Pattern atom
-•	Pattern Qualifiers
-•	Character Classes
-•	Multiple and Saving Patterns
-•	Word Boundary
-•	Search Pattern modifiers
-•	Changing Case using Search and Replace
-•	Delimiters in Search and Replace
-•	Further Reading
 
-Flags for Search and Replace
-•	g replace all occurrences within line
-•	c ask for confirmation before each replacement
-•	i ignore case for searchpattern
-•	I don't ignore case for searchpattern
+## Regular Expressions(O'Reilly & Associates) 一書。
+### Regular Expressions
+*	Flags for Search and Replace
+*	Pattern atom
+*	Pattern Qualifiers
+*	Character Classes
+*	Multiple and Saving Patterns
+*	Word Boundary
+*	Search Pattern modifiers
+*	Changing Case using Search and Replace
+*	Delimiters in Search and Replace
+*	Further Reading
+
+### Flags for Search and Replace
+*	g replace all occurrences within line
+*	c ask for confirmation before each replacement
+*	i ignore case for searchpattern
+*	I don't ignore case for searchpattern
 Flags can be combined
-•	s/cat/Dog/gi replace every occurrence of cat (ignoring case, so it matches Cat, cAt, etc) with Dog (note that i doesn't affect the replacement string Dog)
+*	s/cat/Dog/gi replace every occurrence of cat (ignoring case, so it matches Cat, cAt, etc) with Dog (note that i doesn't affect the replacement string Dog)
 For more info, :h :s_flags
 
-Pattern atom
-•	^ start matching from beginning of a line
-o	/^This match This only at beginning of line
-•	$ match pattern should terminate at end of a line
-o	/)$ match ) only at end of line
-o	/^$ match empty line
-•	. match any single character, excluding new line
-o	/c.t match 'cat' or 'cot' or 'c2t' or 'c^t' but not 'cant'
+### Pattern atom
+*	^ start matching from beginning of a line
+*	/^This match This only at beginning of line
+*	$ match pattern should terminate at end of a line
+*	/)$ match ) only at end of line
+*	/^$ match empty line
+*	. match any single character, excluding new line
+*	/c.t match 'cat' or 'cot' or 'c2t' or 'c^t' but not 'cant'
 For more info, :h pattern-atoms
 
-Pattern Qualifiers
-•	*greedy match preceding character 0 or more times
-o	/abc* match 'ab' or 'abc' or 'abccc' or 'abcccccc' etc
-•	\+ greedy match preceding character 1 or more times
-o	/abc\+ match 'abc' or 'abccc' but not 'ab'
-•	\? match preceding character 0 or 1 times (\= can also be used)
-o	/abc\? match 'ab' or 'abc' but not 'abcc'
-•	\{-} non-greedy match preceding character 0 or more times
-o	Consider this line of text 'This is a sample text'
-o	/h.\{-}s will match: 'his'
-o	/h.*s will match: 'his is a s'
-o	Read more on non-greedy matching
-•	\{min,max} greedy match preceding character min to max times (including min and max)
-o	min or max can be left unspecified as they default to 0 and infinity respectively
-o	greedy match, tries to match as much as possible
-•	\{-min,max} non-greedy match, tries to match as less as possible
-•	\{number} match exactly with specified number
-o	/c\{5} match exactly 'ccccc'
+### Pattern Qualifiers
+*	*greedy match preceding character 0 or more times
+*	/abc* match 'ab' or 'abc' or 'abccc' or 'abcccccc' etc
+*	\+ greedy match preceding character 1 or more times
+*	/abc\+ match 'abc' or 'abccc' but not 'ab'
+*	\? match preceding character 0 or 1 times (\= can also be used)
+*	/abc\? match 'ab' or 'abc' but not 'abcc'
+*	\{-} non-greedy match preceding character 0 or more times
+*	Consider this line of text 'This is a sample text'
+*	/h.\{-}s will match: 'his'
+*	/h.*s will match: 'his is a s'
+*	Read more on non-greedy matching
+*	\{min,max} greedy match preceding character min to max times (including min and max)
+*	min or max can be left unspecified as they default to 0 and infinity respectively
+*	greedy match, tries to match as much as possible
+*	\{-min,max} non-greedy match, tries to match as less as possible
+*	\{number} match exactly with specified number
+*	/c\{5} match exactly 'ccccc'
 For more info, :h pattern-overview
 
-Character Classes
-•	[abcde] match any of 'a' or 'b' or 'c' or 'd' or 'e' ONE time
-o	use [a-e] as shortform
-•	[^abcde] match any character other than 'a' or 'b' or 'c' or 'd' or 'e'
-o	use [^a-e] as shortform
-•	[aeiou] match vowel character
-•	[^aeiou] match consonant character
-•	\a matches alphabet character, short-cut for [a-zA-Z]
-•	\A matches other than alphabet [^a-zA-Z]
-•	\l matches lowercase alphabets [a-z]
-•	\L matches other than lowercase alphabets [^a-z]
-•	\u matches uppercase alphabets [A-Z]
-•	\U matches other than uppercase alphabets [^A-Z]
-•	\d matches digit character [0-9]
-•	\D matches other than digit [^0-9]
-•	\x matches hexademical character [0-9a-fA-F]
-•	\X matches other than hexademical [^0-9a-fA-F]
-•	\w matches any alphanumeric character or underscore [a-zA-Z0-9_]
-•	\W match other than alphanumeric character or underscore [^a-zA-Z0-9_]
-•	\s matches white-space characters space and tab
-•	\S matches other than white-space characters
-•	\t used in replacestring to insert a Tab character
-•	\r used in replacestring to insert a newline character
+### Character Classes
+*	[abcde] match any of 'a' or 'b' or 'c' or 'd' or 'e' ONE time
+*	use [a-e] as shortform
+*	[^abcde] match any character other than 'a' or 'b' or 'c' or 'd' or 'e'
+*	use [^a-e] as shortform
+*	[aeiou] match vowel character
+*	[^aeiou] match consonant character
+*	\a matches alphabet character, short-cut for [a-zA-Z]
+*	\A matches other than alphabet [^a-zA-Z]
+*	\l matches lowercase alphabets [a-z]
+*	\L matches other than lowercase alphabets [^a-z]
+*	\u matches uppercase alphabets [A-Z]
+*	\U matches other than uppercase alphabets [^A-Z]
+*	\d matches digit character [0-9]
+*	\D matches other than digit [^0-9]
+*	\x matches hexademical character [0-9a-fA-F]
+*	\X matches other than hexademical [^0-9a-fA-F]
+*	\w matches any alphanumeric character or underscore [a-zA-Z0-9_]
+*	\W match other than alphanumeric character or underscore [^a-zA-Z0-9_]
+*	\s matches white-space characters space and tab
+*	\S matches other than white-space characters
+*	\t used in replacestring to insert a Tab character
+*	\r used in replacestring to insert a newline character
 For more info, :h /character-classes
 
-Multiple and Saving Patterns
-•	\| allows to specify two or more patterns to be matched
-o	/min\|max match 'min' or 'max'
-•	\(pattern\) allows to group matched patterns and use special variables \1, \2, etc to represent them in same searchpattern and/or replacestring when using substitute command
-o	/hand\(y\|ful\) match 'handy' or 'handful'
-o	/\(\a\)\1 match repeated alphabets
+### Multiple and Saving Patterns
+*	\| allows to specify two or more patterns to be matched
+*	/min\|max match 'min' or 'max'
+### •	\(pattern\) allows to group matched patterns and use special variables \1, \2, etc to represent them in same searchpattern and/or replacestring when using substitute command
+*	/hand\(y\|ful\) match 'handy' or 'handful'
+*	/\(\a\)\1 match repeated alphabets
 
-Word Boundary
-•	\<pattern Bind the searchpattern to necessarily be starting characters of a word
-o	/\<his matches 'his' and 'history' but not 'this'
-•	pattern\> Bind the searchpattern to necessarily be ending characters of a word
-o	/his\> matches 'his' and 'this' but not 'history'
-•	\<pattern\> Bind the searchpattern to exactly match whole word
-o	/\<his\> matches 'his' and not 'this' or 'history'
+### Word Boundary
+*	\<pattern Bind the searchpattern to necessarily be starting characters of a word
+*	/\<his matches 'his' and 'history' but not 'this'
+*	pattern\> Bind the searchpattern to necessarily be ending characters of a word
+*	/his\> matches 'his' and 'this' but not 'history'
+*	\<pattern\> Bind the searchpattern to exactly match whole word
+*	/\<his\> matches 'his' and not 'this' or 'history'
 
-Search Pattern modifiers
-•	\v helps to avoid \ for pattern qualifiers, grouping pattern, etc
-o	/\vc{5} match exactly 'ccccc'
-o	/\vabc+ match 'abc' or 'abccc' but not 'ab'
-o	/\vabc? match 'ab' or 'abc' but not 'abcc'
-o	/\v<his> match whole word 'his', not 'this' or 'history'
-o	/\vmin|max match 'min' or 'max'
-o	/\vhand(y|ful) match 'handy' or 'handful'
-o	/\v(\a)\1 match repeated alphabets
-o	s/\v(\d+) (\d+)/\2 \1/ swap two numbers separated by space
-•	\V no need to use \ when trying to match special characters
-o	/V^.*$ match the exact sequence ^.*$
-•	\c case insensitive search
-o	/\cthis matches 'this', 'This', 'thiS', etc
-•	\C case sensitive search
-o	/\Cthis match exactly 'this', not 'This', 'thiS', etc
-•	\%V only inside visually selected area
-o	s/\%Vcat/dog/g replace 'cat' with 'dog' only in visually selected region
-For more info
-•	:h /magic
-•	Magicness in Vim regex
-•	Excellent examples and other Vim settings on case sensitivity
+### Search Pattern modifiers
+*	\v helps to avoid \ for pattern qualifiers, grouping pattern, etc
+*	/\vc{5} match exactly 'ccccc'
+*	/\vabc+ match 'abc' or 'abccc' but not 'ab'
+*	/\vabc? match 'ab' or 'abc' but not 'abcc'
+*	/\v<his> match whole word 'his', not 'this' or 'history'
+*	/\vmin|max match 'min' or 'max'
+*	/\vhand(y|ful) match 'handy' or 'handful'
+*	/\v(\a)\1 match repeated alphabets
+*	s/\v(\d+) (\d+)/\2 \1/ swap two numbers separated by space
+*	\V no need to use \ when trying to match special characters
+*	/V^.*$ match the exact sequence ^.*$
+*	\c case insensitive search
+*	/\cthis matches 'this', 'This', 'thiS', etc
+*	\C case sensitive search
+*	/\Cthis match exactly 'this', not 'This', 'thiS', etc
+*	\%V only inside visually selected area
+*	s/\%Vcat/dog/g replace 'cat' with 'dog' only in visually selected region
+### For more info
+*	:h /magic
+*	Magicness in Vim regex
+*	Excellent examples and other Vim settings on case sensitivity
 
-Changing Case using Search and Replace
+### Changing Case using Search and Replace
 These are used in the replacestring section
-•	\u uppercases the next character
-•	\U UPPERCASES the following characters
-•	\l and \L are equivalent for lowercase
-•	use \e and \E to end further case changes
+*	\u uppercases the next character
+*	\U UPPERCASES the following characters
+*	\l and \L are equivalent for lowercase
+*	use \e and \E to end further case changes
 Example:
-•	:% s/\v(\a+)/\u\1/g will Capitalize all the words in current file (i.e only first character of word is capitalized)
-•	:% s/\v(\a+)/\U\1/g will change to all letters to UPPERCASE in current file
-•	:% s/\v(\w)_(\a+)/\1\u\2/g change variable_name to camelCase
-o	for ex: 'min_max' will change to 'minMax', 'array_sum' will change to 'arraySum' and so on
-•	Changing case with regular expressions
+```
+*	:% s/\v(\a+)/\u\1/g will Capitalize all the words in current file (i.e only first character of word is capitalized)
+*	:% s/\v(\a+)/\U\1/g will change to all letters to UPPERCASE in current file
+*	:% s/\v(\w)_(\a+)/\1\u\2/g change variable_name to camelCase
+*	for ex: 'min_max' will change to 'minMax', 'array_sum' will change to 'arraySum' and so on
+*	Changing case with regular expressions
 
 Delimiters in Search and Replace
-One can also use other characters like #^$ instead of /
-•	:% s#/project/adder/#/verilog/project/high_speed_adder/#g this avoids mess of having to use \/ for every / character
+*ne can also use other characters like #^$ instead of /
+*	:% s#/project/adder/#/verilog/project/high_speed_adder/#g this avoids mess of having to use \/ for every / character
+```
 
-Further Reading
-•	:h regular-expression
-•	vimregex
-•	What does this regex mean?
+### Further Reading
+*	:h regular-expression
+*	vimregex
+*	What does this regex mean?
 
 
 
