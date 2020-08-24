@@ -1,8 +1,3 @@
-# VSCODE: 菜鳥學習VSCODE
-
-* regex s/(keyword)/copy $1 $1.bk/g
-* regex /keywor   Ctr+Sht+L mulitcursor
-
 # Vim 101: 菜鳥學習VIM教程 A Beginner’s Guide to Vim
 ## 來一個簡單例子 ex01
 ```cmd
