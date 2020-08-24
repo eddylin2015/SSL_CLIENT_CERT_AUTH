@@ -149,7 +149,7 @@ You can also exit Vim using ZZ, which will save and quit the file.
 ## Source
 * https://www.linux.com/training-tutorials/vim-101-beginners-guide-vim/
 * https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf
-
+![GITHUB]( https://people.csail.mit.edu/vgod/vim/vim-cheat-sheet-en.png "vim cheat sheet")
 ## 參考指令表 VIM SHEET
 ### Navigation
 * h Move left
