@@ -1,4 +1,5 @@
 # VSCODE: 菜鳥學習VSCODE
+https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf
 # regex
 * regex s/(keyword)/copy $1 $1.bk/g
 * regex /keywor   Ctr+Sht+L mulitcursor
