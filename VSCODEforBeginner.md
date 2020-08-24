@@ -1,8 +1,13 @@
 # VSCODE: 菜鳥學習VSCODE
-https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf
+
 # regex
 * regex s/(keyword)/copy $1 $1.bk/g
 * regex /keywor   Ctr+Sht+L mulitcursor
+
+## keyboard-shortcuts
+Ctrl K,Ctrl S
+https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf
+
 ## General
 * Ctrl+Shift+P, F1 Show Command Palette
 * Ctrl+P Quick Open, Go to File…
