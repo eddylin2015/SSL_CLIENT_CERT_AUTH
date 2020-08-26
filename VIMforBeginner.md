@@ -1,4 +1,21 @@
 # Vim 101: 菜鳥學習VIM教程 A Beginner’s Guide to Vim
+## Text Sample
+```
+                              
+I have a little brain.
+I likes HUUNY.
+Piglet is my good friend.
+He is brave.
+Tigger is naughty,he like eating cookies.
+And he likes bouncing,and likes playing.
+Roo is Tigger's friend,he is smart and small.
+kanga is Roo's mother,she can cooking.
+And Dodo is so big ,and Roois his friend.
+Er likes eating grass,sometime his house falls down.
+gugu can swimming and catch lots of fish.
+rabbit is workhard,he don't know how to play with friends.
+
+```
 ## 來一個簡單例子 ex01
 ```cmd
  Open file: vim filename
