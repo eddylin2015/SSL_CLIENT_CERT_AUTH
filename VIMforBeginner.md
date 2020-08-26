@@ -1,5 +1,5 @@
 # Vim 101: 菜鳥學習VIM教程 A Beginner’s Guide to Vim
-## Text Sample
+## 打文字例子
 ```
                               
 I have a little brain.
